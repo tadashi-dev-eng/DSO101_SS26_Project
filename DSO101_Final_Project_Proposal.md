@@ -464,6 +464,5 @@ docs/
 
 ---
 
-*Document created for DSO101 - Continuous Integration and Continuous Deployment Course*
-*Last updated: Week 7*
+*Document created for DSO101 - Continuous Integration and Continuous Deployment*
 
