@@ -22,7 +22,6 @@ app.use("/*", cors());
 app.get("/", (c) => {
   return c.json({ status: "ok", message: "Server running" });
 });
-console.log("Server is running on http://localhost:3000");
 
 app.post("/register", async (c) => {
   const body = await c.req.json();
@@ -115,4 +114,6 @@ app.get("/protected/me", (c) => {
   return c.json({ userId: payload.sub });
 });
 
-serve(app);
+const port = Number(process.env.PORT ?? 3001);
+console.log(`Server is running on http://localhost:${port}`);
+serve({ fetch: app.fetch, port });
