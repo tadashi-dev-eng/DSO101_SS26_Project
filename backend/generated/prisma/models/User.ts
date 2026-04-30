@@ -174,7 +174,7 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
   hashedPassword?: Prisma.StringFilter<"User"> | string
-  posts?: Prisma.PostListRelationFilter
+  tasks?: Prisma.TaskListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -182,7 +182,7 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   hashedPassword?: Prisma.SortOrder
-  posts?: Prisma.PostOrderByRelationAggregateInput
+  tasks?: Prisma.TaskOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -193,7 +193,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
   hashedPassword?: Prisma.StringFilter<"User"> | string
-  posts?: Prisma.PostListRelationFilter
+  tasks?: Prisma.TaskListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -221,7 +221,7 @@ export type UserCreateInput = {
   email: string
   name?: string | null
   hashedPassword: string
-  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -229,21 +229,21 @@ export type UserUncheckedCreateInput = {
   email: string
   name?: string | null
   hashedPassword: string
-  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hashedPassword?: Prisma.StringFieldUpdateOperationsInput | string
-  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hashedPassword?: Prisma.StringFieldUpdateOperationsInput | string
-  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -300,57 +300,57 @@ export type NullableStringFieldUpdateOperationsInput = {
   unset?: boolean
 }
 
-export type UserCreateNestedOneWithoutPostsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
+export type UserCreateNestedOneWithoutTasksInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTasksInput, Prisma.UserUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTasksInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutPostsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
-  upsert?: Prisma.UserUpsertWithoutPostsInput
+export type UserUpdateOneRequiredWithoutTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTasksInput, Prisma.UserUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTasksInput
+  upsert?: Prisma.UserUpsertWithoutTasksInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostsInput, Prisma.UserUpdateWithoutPostsInput>, Prisma.UserUncheckedUpdateWithoutPostsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTasksInput, Prisma.UserUpdateWithoutTasksInput>, Prisma.UserUncheckedUpdateWithoutTasksInput>
 }
 
-export type UserCreateWithoutPostsInput = {
+export type UserCreateWithoutTasksInput = {
   id?: string
   email: string
   name?: string | null
   hashedPassword: string
 }
 
-export type UserUncheckedCreateWithoutPostsInput = {
+export type UserUncheckedCreateWithoutTasksInput = {
   id?: string
   email: string
   name?: string | null
   hashedPassword: string
 }
 
-export type UserCreateOrConnectWithoutPostsInput = {
+export type UserCreateOrConnectWithoutTasksInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTasksInput, Prisma.UserUncheckedCreateWithoutTasksInput>
 }
 
-export type UserUpsertWithoutPostsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutPostsInput, Prisma.UserUncheckedUpdateWithoutPostsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+export type UserUpsertWithoutTasksInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTasksInput, Prisma.UserUncheckedUpdateWithoutTasksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTasksInput, Prisma.UserUncheckedCreateWithoutTasksInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutPostsInput = {
+export type UserUpdateToOneWithWhereWithoutTasksInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutPostsInput, Prisma.UserUncheckedUpdateWithoutPostsInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTasksInput, Prisma.UserUncheckedUpdateWithoutTasksInput>
 }
 
-export type UserUpdateWithoutPostsInput = {
+export type UserUpdateWithoutTasksInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hashedPassword?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type UserUncheckedUpdateWithoutPostsInput = {
+export type UserUncheckedUpdateWithoutTasksInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hashedPassword?: Prisma.StringFieldUpdateOperationsInput | string
@@ -362,11 +362,11 @@ export type UserUncheckedUpdateWithoutPostsInput = {
  */
 
 export type UserCountOutputType = {
-  posts: number
+  tasks: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  posts?: boolean | UserCountOutputTypeCountPostsArgs
+  tasks?: boolean | UserCountOutputTypeCountTasksArgs
 }
 
 /**
@@ -382,8 +382,8 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PostWhereInput
+export type UserCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskWhereInput
 }
 
 
@@ -392,7 +392,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   name?: boolean
   hashedPassword?: boolean
-  posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -407,14 +407,14 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "hashedPassword", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    posts: Prisma.$PostPayload<ExtArgs>[]
+    tasks: Prisma.$TaskPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -784,7 +784,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  posts<T extends Prisma.User$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tasks<T extends Prisma.User$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1188,27 +1188,27 @@ export type UserAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * User.posts
+ * User.tasks
  */
-export type User$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Post
+   * Select specific fields to fetch from the Task
    */
-  select?: Prisma.PostSelect<ExtArgs> | null
+  select?: Prisma.TaskSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Post
+   * Omit specific fields from the Task
    */
-  omit?: Prisma.PostOmit<ExtArgs> | null
+  omit?: Prisma.TaskOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PostInclude<ExtArgs> | null
-  where?: Prisma.PostWhereInput
-  orderBy?: Prisma.PostOrderByWithRelationInput | Prisma.PostOrderByWithRelationInput[]
-  cursor?: Prisma.PostWhereUniqueInput
+  include?: Prisma.TaskInclude<ExtArgs> | null
+  where?: Prisma.TaskWhereInput
+  orderBy?: Prisma.TaskOrderByWithRelationInput | Prisma.TaskOrderByWithRelationInput[]
+  cursor?: Prisma.TaskWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+  distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
 }
 
 /**

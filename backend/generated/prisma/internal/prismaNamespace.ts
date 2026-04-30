@@ -391,7 +391,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Post: 'Post'
+  Task: 'Task'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "post"
+    modelProps: "user" | "task"
     txIsolationLevel: never
   }
   model: {
@@ -485,77 +485,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Post: {
-      payload: Prisma.$PostPayload<ExtArgs>
-      fields: Prisma.PostFieldRefs
+    Task: {
+      payload: Prisma.$TaskPayload<ExtArgs>
+      fields: Prisma.TaskFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.PostFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload> | null
+          args: Prisma.TaskFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.PostFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload>
+          args: Prisma.TaskFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload>
         }
         findFirst: {
-          args: Prisma.PostFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload> | null
+          args: Prisma.TaskFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.PostFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload>
+          args: Prisma.TaskFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload>
         }
         findMany: {
-          args: Prisma.PostFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload>[]
+          args: Prisma.TaskFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload>[]
         }
         create: {
-          args: Prisma.PostCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload>
+          args: Prisma.TaskCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload>
         }
         createMany: {
-          args: Prisma.PostCreateManyArgs<ExtArgs>
+          args: Prisma.TaskCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.PostDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload>
+          args: Prisma.TaskDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload>
         }
         update: {
-          args: Prisma.PostUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload>
+          args: Prisma.TaskUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload>
         }
         deleteMany: {
-          args: Prisma.PostDeleteManyArgs<ExtArgs>
+          args: Prisma.TaskDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.PostUpdateManyArgs<ExtArgs>
+          args: Prisma.TaskUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.PostUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostPayload>
+          args: Prisma.TaskUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TaskPayload>
         }
         aggregate: {
-          args: Prisma.PostAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePost>
+          args: Prisma.TaskAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTask>
         }
         groupBy: {
-          args: Prisma.PostGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PostGroupByOutputType>[]
+          args: Prisma.TaskGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TaskGroupByOutputType>[]
         }
         findRaw: {
-          args: Prisma.PostFindRawArgs<ExtArgs>
+          args: Prisma.TaskFindRawArgs<ExtArgs>
           result: Prisma.JsonObject
         }
         aggregateRaw: {
-          args: Prisma.PostAggregateRawArgs<ExtArgs>
+          args: Prisma.TaskAggregateRawArgs<ExtArgs>
           result: Prisma.JsonObject
         }
         count: {
-          args: Prisma.PostCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PostCountAggregateOutputType> | number
+          args: Prisma.TaskCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TaskCountAggregateOutputType> | number
         }
       }
     }
@@ -586,15 +586,17 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const PostScalarFieldEnum = {
+export const TaskScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  content: 'content',
-  published: 'published',
+  description: 'description',
+  completed: 'completed',
+  dueDate: 'dueDate',
+  createdAt: 'createdAt',
   authorId: 'authorId'
 } as const
 
-export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -637,6 +639,20 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -740,7 +756,7 @@ export interface PrismaClientOptions {
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
-  post?: Prisma.PostOmit
+  task?: Prisma.TaskOmit
 }
 
 /* Types for Logging */

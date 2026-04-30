@@ -40,7 +40,8 @@ export const JsonNull = runtime.objectEnumValues.instances.JsonNull;
 export const AnyNull = runtime.objectEnumValues.instances.AnyNull;
 export const ModelName = {
     User: 'User',
-    Post: 'Post'
+    Post: 'Post',
+    Task: 'Task'
 };
 /*
  * Enums
@@ -56,6 +57,15 @@ export const PostScalarFieldEnum = {
     title: 'title',
     content: 'content',
     published: 'published',
+    authorId: 'authorId'
+};
+export const TaskScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    completed: 'completed',
+    dueDate: 'dueDate',
+    createdAt: 'createdAt',
     authorId: 'authorId'
 };
 export const SortOrder = {
