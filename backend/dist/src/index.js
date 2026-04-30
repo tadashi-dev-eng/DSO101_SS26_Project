@@ -8,13 +8,19 @@ import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 dotenv.config();
 const app = new Hono();
+function getAuthenticatedUserId(c) {
+    const payload = c.get("jwtPayload");
+    if (!payload || typeof payload.sub !== "string") {
+        throw new HTTPException(401, { message: "Unauthorized" });
+    }
+    return payload.sub;
+}
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET ?? "mySecretKey";
 app.use("/*", cors());
 app.get("/", (c) => {
     return c.json({ status: "ok", message: "Server running" });
 });
-console.log("Server is running on http://localhost:3000");
 app.post("/register", async (c) => {
     const body = await c.req.json();
     const email = body.email?.toString().trim();
@@ -85,10 +91,99 @@ app.use("/protected/*", jwt({
     alg: "HS256",
 }));
 app.get("/protected/me", (c) => {
-    const payload = c.get("jwtPayload");
-    if (!payload) {
-        throw new HTTPException(401, { message: "Unauthorized" });
-    }
-    return c.json({ userId: payload.sub });
+    const userId = getAuthenticatedUserId(c);
+    return c.json({ userId });
 });
-serve(app);
+app.get("/protected/tasks", async (c) => {
+    const userId = getAuthenticatedUserId(c);
+    const tasks = await prisma.task.findMany({
+        where: { authorId: userId },
+        orderBy: { createdAt: "desc" },
+    });
+    return c.json({ tasks });
+});
+app.get("/protected/tasks/:id", async (c) => {
+    const userId = getAuthenticatedUserId(c);
+    const id = c.req.param("id");
+    const task = await prisma.task.findUnique({ where: { id } });
+    if (!task || task.authorId !== userId) {
+        throw new HTTPException(404, { message: "Task not found" });
+    }
+    return c.json({ task });
+});
+app.post("/protected/tasks", async (c) => {
+    const userId = getAuthenticatedUserId(c);
+    const body = await c.req.json();
+    const title = body.title?.toString().trim();
+    const description = body.description?.toString().trim();
+    const completed = body.completed === true;
+    const dueDate = body.dueDate ? new Date(body.dueDate) : undefined;
+    if (!title) {
+        throw new HTTPException(400, { message: "Task title is required" });
+    }
+    if (dueDate && Number.isNaN(dueDate.getTime())) {
+        throw new HTTPException(400, { message: "Invalid dueDate" });
+    }
+    const task = await prisma.task.create({
+        data: {
+            title,
+            description,
+            completed,
+            dueDate,
+            authorId: userId,
+        },
+    });
+    return c.json({ message: "Task created successfully", task }, 201);
+});
+app.put("/protected/tasks/:id", async (c) => {
+    const userId = getAuthenticatedUserId(c);
+    const id = c.req.param("id");
+    const body = await c.req.json();
+    const title = body.title?.toString().trim();
+    const description = body.description !== undefined ? body.description.toString().trim() : undefined;
+    const completed = body.completed;
+    const dueDateValue = body.dueDate !== undefined ? new Date(body.dueDate) : undefined;
+    const task = await prisma.task.findUnique({ where: { id } });
+    if (!task || task.authorId !== userId) {
+        throw new HTTPException(404, { message: "Task not found" });
+    }
+    const updateData = {};
+    if (title)
+        updateData.title = title;
+    if (description !== undefined)
+        updateData.description = description;
+    if (typeof completed === "boolean")
+        updateData.completed = completed;
+    if (body.dueDate !== undefined) {
+        if (body.dueDate === null || body.dueDate === "") {
+            updateData.dueDate = null;
+        }
+        else {
+            if (!dueDateValue || Number.isNaN(dueDateValue.getTime())) {
+                throw new HTTPException(400, { message: "Invalid dueDate" });
+            }
+            updateData.dueDate = dueDateValue;
+        }
+    }
+    if (Object.keys(updateData).length === 0) {
+        throw new HTTPException(400, { message: "No valid fields to update" });
+    }
+    const updatedTask = await prisma.task.update({
+        where: { id },
+        data: updateData,
+    });
+    return c.json({ message: "Task updated successfully", task: updatedTask });
+});
+app.delete("/protected/tasks/:id", async (c) => {
+    const userId = getAuthenticatedUserId(c);
+    const id = c.req.param("id");
+    const task = await prisma.task.findUnique({ where: { id } });
+    if (!task || task.authorId !== userId) {
+        throw new HTTPException(404, { message: "Task not found" });
+    }
+    await prisma.task.delete({ where: { id } });
+    return c.json({ message: "Task deleted successfully" });
+});
+const port = Number(process.env.PORT ?? 3001);
+console.log(`Server is running on http://localhost:${port}`);
+serve({ fetch: app.fetch, port });
