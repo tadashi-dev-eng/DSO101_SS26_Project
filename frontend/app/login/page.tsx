@@ -1,19 +1,27 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export default function LoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [remember, setRemember] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("token")) {
+      router.replace("/tasks")
+    }
+  }, [router])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -44,7 +52,13 @@ export default function LoginPage() {
         throw new Error(data?.message || `Signin failed (${response.status})`)
       }
 
+      const token = data?.token
+      if (token) {
+        localStorage.setItem("token", token)
+      }
+
       setMessage(data?.message || "Signed in successfully.")
+      router.push("/tasks")
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
     } finally {
