@@ -6,7 +6,8 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "types": [
-      "node"
+      "node",
+      "vitest/globals"
     ],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
