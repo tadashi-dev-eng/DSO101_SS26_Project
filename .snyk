@@ -1,0 +1,13 @@
+version: v1.0.0
+
+# Use this file to ignore specific Snyk findings or configure custom Snyk behavior.
+# Add entries under `ignore` only when you have validated the finding and accept the risk.
+
+ignore:
+  # Example:
+  # "SNYK-JAVA-COMFASTERXMLJACKSONCORE-1234567":
+  #   - "*":
+  #       reason: "False positive in our project context"
+  #       expires: "2026-12-31T23:59:59.999Z"
+
+patches: {}
