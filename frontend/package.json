@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "security": "npx snyk test --severity-threshold=high"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

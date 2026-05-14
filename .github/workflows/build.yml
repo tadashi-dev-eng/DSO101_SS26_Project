@@ -31,6 +31,14 @@ jobs:
       - name: Run backend tests and coverage
         run: cd backend && npm run coverage
 
+      - name: Snyk Security Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test
+          args: --all-projects --detection-depth=2 --severity-threshold=high
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6.0.0
         env:

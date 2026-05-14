@@ -6,7 +6,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "security": "npx snyk test --severity-threshold=high"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.14",
