@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  taskflow-app:
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - BACKEND_PORT=3001
+    volumes:
+      - ./frontend:/app/frontend:cached
+      - ./backend:/app/backend:cached
+      - ./:/app:delegated
+    working_dir: /app
+    command: >
+      sh -c "
+        cd /app/backend && npm install && PORT=3001 npm run dev &
+        cd /app/frontend && npm install && npm run dev -p 3000
+      "
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+    depends_on:
+      - mongo

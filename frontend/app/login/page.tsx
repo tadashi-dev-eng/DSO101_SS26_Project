@@ -8,6 +8,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api"
+
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
@@ -30,7 +32,7 @@ export default function LoginPage() {
     setMessage(null)
 
     try {
-      const response = await fetch("http://localhost:3001/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

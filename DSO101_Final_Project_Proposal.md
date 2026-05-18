@@ -72,7 +72,7 @@ To develop a comprehensive CI/CD pipeline for a web-based task management applic
    - Automated deployment to staging/production
 
 4. **External Service Integrations**
-   - Codecov for test coverage visualization
+   - Sonarqube for test coverage visualization
    - Snyk/Dependabot for security scanning
    - Vercel/Render for deployment
    - GitHub Releases for version tracking

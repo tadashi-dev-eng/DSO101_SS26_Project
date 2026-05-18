@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api"
+
 export default function SignupPage() {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -16,14 +18,14 @@ export default function SignupPage() {
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
     setError(null)
     setMessage(null)
 
     try {
-      const response = await fetch("http://localhost:3001/register", {
+      const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
