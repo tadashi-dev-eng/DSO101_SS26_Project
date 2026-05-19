@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: SonarCloud Code Coverage
 
 on:
   push:
@@ -7,35 +7,36 @@ on:
     branches: ["main"]
 
 jobs:
-  test:
-    name: Build and Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: "temurin"
-          cache: maven
-      - name: Build and Test
-        run: mvn clean verify
-
   sonarcloud:
-    name: SonarCloud Security Scan
-    needs: test
+    name: SonarCloud Code Coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
         with:
-          java-version: "17"
-          distribution: "temurin"
-          cache: maven
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate frontend coverage
+        working-directory: frontend
+        run: npm run coverage
+
+      - name: Generate backend coverage
+        working-directory: backend
+        run: npm run coverage
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
@@ -45,10 +46,10 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Run SonarCloud analysis
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn sonar:sonar \
-            -Dsonar.projectKey=${{ secrets.SONAR_ORGANIZATION }}_cicd-demo \
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          host: https://sonarcloud.io
+          organization: ${{ secrets.SONAR_ORGANIZATION }}
+          projectKey: ${{ secrets.SONAR_ORGANIZATION }}_dso-project
+          token: ${{ secrets.SONAR_TOKEN }}
+          projectBaseDir: .
