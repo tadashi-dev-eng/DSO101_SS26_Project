@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -30,6 +30,15 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/dso-project:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/dso-project:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/taskflow-app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/taskflow-app:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
+
+      - name: Notify Render to redeploy
+        run: |
+          if [ -n "${{ secrets.RENDER_DEPLOY_WEBHOOK }}" ]; then
+            echo "Calling Render deploy hook..."
+            curl -X POST "${{ secrets.RENDER_DEPLOY_WEBHOOK }}"
+          else
+            echo "No Render deploy hook configured, skipping redeploy."
+          fi
