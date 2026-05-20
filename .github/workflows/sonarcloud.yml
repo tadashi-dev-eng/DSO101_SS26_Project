@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   sonarcloud:
-    name: SonarCloud analysis
+    name: Build and test
     runs-on: ubuntu-latest
 
     steps:
@@ -42,16 +42,3 @@ jobs:
       - name: Generate backend coverage
         working-directory: backend
         run: npm run coverage
-
-      - name: Run SonarCloud analysis
-        uses: SonarSource/sonarqube-scan-action@v5.0.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.organization=tadashi-dev-eng
-            -Dsonar.projectKey=tadashi-dev-eng_DSO101_SS26_Project
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
