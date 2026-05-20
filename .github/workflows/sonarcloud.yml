@@ -52,5 +52,5 @@ jobs:
           SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
-            -Dsonar.projectKey=${{ secrets.SONAR_ORGANIZATION }}_dso-project
+            -Dsonar.projectKey=${{ secrets.SONAR_ORGANIZATION }}_DSO101_SS26_Project
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
