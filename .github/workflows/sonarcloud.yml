@@ -47,9 +47,10 @@ jobs:
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
         with:
-          host: https://sonarcloud.io
-          organization: ${{ secrets.SONAR_ORGANIZATION }}
-          projectKey: ${{ secrets.SONAR_ORGANIZATION }}_dso-project
-          token: ${{ secrets.SONAR_TOKEN }}
-          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_ORGANIZATION }}_dso-project
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
