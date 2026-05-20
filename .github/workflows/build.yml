@@ -33,8 +33,10 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=tadashi-dev-eng \
-          -Dsonar.projectKey=tadashi-dev-eng_DSO101_SS26_Project \
-          -Dsonar.login=${SONAR_TOKEN}
+        run: |
+          mvn -B \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=tadashi-dev-eng \
+            -Dsonar.projectKey=tadashi-dev-eng_DSO101_SS26_Project \
+            -Dsonar.login=${SONAR_TOKEN} \
+            verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
