@@ -38,17 +38,23 @@ export default function SignupPage() {
         }),
       })
 
-      let data: any = null
+      let data: unknown = null
       const contentType = response.headers.get("content-type")
       if (contentType?.includes("application/json")) {
         data = await response.json()
       }
 
+      const responseBody = typeof data === "object" && data !== null ? (data as Record<string, unknown>) : {}
+      const responseMessage =
+        typeof responseBody.message === "string"
+          ? responseBody.message
+          : `Signup failed (${response.status})`
+
       if (!response.ok) {
-        throw new Error(data?.message || `Signup failed (${response.status})`)
+        throw new Error(responseMessage)
       }
 
-      setMessage(data?.message || "Signup successful. You can now log in.")
+      setMessage(typeof responseBody.message === "string" ? responseBody.message : "Signup successful. You can now log in.")
       setFirstName("")
       setLastName("")
       setEmail("")

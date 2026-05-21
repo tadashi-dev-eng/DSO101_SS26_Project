@@ -25,7 +25,7 @@ export default function LoginPage() {
     }
   }, [router])
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
     setError(null)
@@ -44,22 +44,28 @@ export default function LoginPage() {
         }),
       })
 
-      let data: any = null
+      let data: unknown = null
       const contentType = response.headers.get("content-type")
       if (contentType?.includes("application/json")) {
         data = await response.json()
       }
 
+      const responseBody = typeof data === "object" && data !== null ? (data as Record<string, unknown>) : {}
+      const responseMessage =
+        typeof responseBody.message === "string"
+          ? responseBody.message
+          : `Signin failed (${response.status})`
+
       if (!response.ok) {
-        throw new Error(data?.message || `Signin failed (${response.status})`)
+        throw new Error(responseMessage)
       }
 
-      const token = data?.token
+      const token = typeof responseBody.token === "string" ? responseBody.token : undefined
       if (token) {
         localStorage.setItem("token", token)
       }
 
-      setMessage(data?.message || "Signed in successfully.")
+      setMessage(typeof responseBody.message === "string" ? responseBody.message : "Signed in successfully.")
       router.push("/tasks")
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
@@ -138,7 +144,7 @@ export default function LoginPage() {
         ) : null}
 
         <p className="mt-8 text-center text-sm text-slate-600">
-          Don't have an account?{' '}
+          Do not have an account?{' '}
           <Link href="/signup" className="font-medium text-slate-950 underline">
             Sign up
           </Link>

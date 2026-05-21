@@ -1,3 +1,12 @@
-(globalThis as any).self = globalThis;
-(globalThis as any).requestIdleCallback = globalThis.requestIdleCallback ?? ((callback: FrameRequestCallback) => setTimeout(callback, 1));
-(globalThis as any).cancelIdleCallback = globalThis.cancelIdleCallback ?? ((id: number) => clearTimeout(id));
+declare global {
+  interface Window {
+    requestIdleCallback?: typeof requestIdleCallback
+    cancelIdleCallback?: typeof cancelIdleCallback
+  }
+}
+
+const win = globalThis as unknown as Window
+
+win.self = win
+win.requestIdleCallback = win.requestIdleCallback ?? ((callback: FrameRequestCallback) => setTimeout(callback, 1))
+win.cancelIdleCallback = win.cancelIdleCallback ?? ((id: number) => clearTimeout(id))

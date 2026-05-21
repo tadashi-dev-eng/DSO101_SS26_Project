@@ -47,7 +47,7 @@ const Example = () => (
         <Button className="w-full">Sign In</Button>
       </DialogFooter>
       <p className="text-center text-muted-foreground text-sm">
-        Don't have an account?{" "}
+        Do not have an account?{" "}
         <button className="font-medium underline" type="button">
           Sign up
         </button>
