@@ -11,7 +11,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  sonarcloud:
+  build:
     name: Build and test
     runs-on: ubuntu-latest
 
