@@ -93,7 +93,6 @@ jobs:
     name: SonarCloud analysis
     runs-on: ubuntu-latest
     needs: [backend]
-    if: ${{ secrets.SONAR_TOKEN != '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -123,12 +122,15 @@ jobs:
         run: npm run coverage
 
       - name: Run SonarCloud analysis
-        uses: sonarsource/sonarcloud-github-action@v1
-        with:
-          args: >
-            -Dsonar.organization=tadashi-dev-eng
-            -Dsonar.projectKey=tadashi-dev-eng_DSO101_SS26_Project
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [ -z "$SONAR_TOKEN" ]; then
+            echo "SONAR_TOKEN is not configured, skipping SonarCloud analysis."
+            exit 0
+          fi
+          npm install -g sonar-scanner
+          sonar-scanner -Dsonar.login="$SONAR_TOKEN"
 
   docker-publish:
     name: Build and publish Docker image
