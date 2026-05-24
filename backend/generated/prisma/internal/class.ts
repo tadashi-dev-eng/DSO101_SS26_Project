@@ -23,7 +23,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "/home/tadashi/Desktop/DSO-Project/backend/generated/prisma",
+      "value": "/home/runner/work/DSO101_SS26_Project/DSO101_SS26_Project/backend/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -34,10 +34,14 @@ const config: runtime.GetPrismaClientConfig = {
         "fromEnvVar": null,
         "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "linux-musl-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/tadashi/Desktop/DSO-Project/backend/prisma/schema.prisma",
+    "sourceFilePath": "/home/runner/work/DSO101_SS26_Project/DSO101_SS26_Project/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativePath": "../../prisma",
@@ -47,7 +51,8 @@ const config: runtime.GetPrismaClientConfig = {
     "db"
   ],
   "activeProvider": "mongodb",
-  "postinstall": false,
+  "postinstall": true,
+  "ciName": "GitHub Actions",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -56,8 +61,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id             String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email          String  @unique\n  name           String?\n  hashedPassword String\n  Task           Task[]\n}\n\nmodel Task {\n  id          String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  title       String\n  description String?\n  completed   Boolean   @default(false)\n  dueDate     DateTime?\n  createdAt   DateTime  @default(now())\n  author      User      @relation(fields: [authorId], references: [id])\n  authorId    String    @db.ObjectId\n}\n",
-  "inlineSchemaHash": "b1c00a0208892f83aadf14d41eea48818caf9bd5e738895d824c68d50e87897c",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"linux-musl-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id             String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email          String  @unique\n  name           String?\n  hashedPassword String\n  Task           Task[]\n}\n\nmodel Task {\n  id          String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  title       String\n  description String?\n  completed   Boolean   @default(false)\n  dueDate     DateTime?\n  createdAt   DateTime  @default(now())\n  author      User      @relation(fields: [authorId], references: [id])\n  authorId    String    @db.ObjectId\n}\n",
+  "inlineSchemaHash": "902a6b1b00b8a4f7f04b3efd30794d8564cb3a4ef0dd1f926201ac8fc95c7735",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},

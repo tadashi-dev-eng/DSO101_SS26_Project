@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/196</span>
+                <span class='fraction'>0/201</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/196</span>
+                <span class='fraction'>0/201</span>
             </div>
         
             
@@ -259,7 +259,17 @@
 <a name='L194'></a><a href='#L194'>194</a>
 <a name='L195'></a><a href='#L195'>195</a>
 <a name='L196'></a><a href='#L196'>196</a>
-<a name='L197'></a><a href='#L197'>197</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -480,7 +490,7 @@
 <span class="cstat-no" title="statement not covered" >      "value": "prisma-client"</span>
 <span class="cstat-no" title="statement not covered" >    },</span>
 <span class="cstat-no" title="statement not covered" >    "output": {</span>
-<span class="cstat-no" title="statement not covered" >      "value": "/home/tadashi/Desktop/DSO-Project/backend/generated/prisma",</span>
+<span class="cstat-no" title="statement not covered" >      "value": "/home/runner/work/DSO101_SS26_Project/DSO101_SS26_Project/backend/generated/prisma",</span>
 <span class="cstat-no" title="statement not covered" >      "fromEnvVar": null</span>
 <span class="cstat-no" title="statement not covered" >    },</span>
 <span class="cstat-no" title="statement not covered" >    "config": {</span>
@@ -491,10 +501,14 @@
 <span class="cstat-no" title="statement not covered" >        "fromEnvVar": null,</span>
 <span class="cstat-no" title="statement not covered" >        "value": "debian-openssl-3.0.x",</span>
 <span class="cstat-no" title="statement not covered" >        "native": true</span>
+<span class="cstat-no" title="statement not covered" >      },</span>
+<span class="cstat-no" title="statement not covered" >      {</span>
+<span class="cstat-no" title="statement not covered" >        "fromEnvVar": null,</span>
+<span class="cstat-no" title="statement not covered" >        "value": "linux-musl-openssl-3.0.x"</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    ],</span>
 <span class="cstat-no" title="statement not covered" >    "previewFeatures": [],</span>
-<span class="cstat-no" title="statement not covered" >    "sourceFilePath": "/home/tadashi/Desktop/DSO-Project/backend/prisma/schema.prisma",</span>
+<span class="cstat-no" title="statement not covered" >    "sourceFilePath": "/home/runner/work/DSO101_SS26_Project/DSO101_SS26_Project/backend/prisma/schema.prisma",</span>
 <span class="cstat-no" title="statement not covered" >    "isCustomOutput": true</span>
 <span class="cstat-no" title="statement not covered" >  },</span>
 <span class="cstat-no" title="statement not covered" >  "relativePath": "../../prisma",</span>
@@ -504,7 +518,8 @@
 <span class="cstat-no" title="statement not covered" >    "db"</span>
 <span class="cstat-no" title="statement not covered" >  ],</span>
 <span class="cstat-no" title="statement not covered" >  "activeProvider": "mongodb",</span>
-<span class="cstat-no" title="statement not covered" >  "postinstall": false,</span>
+<span class="cstat-no" title="statement not covered" >  "postinstall": true,</span>
+<span class="cstat-no" title="statement not covered" >  "ciName": "GitHub Actions",</span>
 <span class="cstat-no" title="statement not covered" >  "inlineDatasources": {</span>
 <span class="cstat-no" title="statement not covered" >    "db": {</span>
 <span class="cstat-no" title="statement not covered" >      "url": {</span>
@@ -513,8 +528,8 @@
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  },</span>
-<span class="cstat-no" title="statement not covered" >  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id             String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email          String  @unique\n  name           String?\n  hashedPassword String\n  Task           Task[]\n}\n\nmodel Task {\n  id          String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  title       String\n  description String?\n  completed   Boolean   @default(false)\n  dueDate     DateTime?\n  createdAt   DateTime  @default(now())\n  author      User      @relation(fields: [authorId], references: [id])\n  authorId    String    @db.ObjectId\n}\n",</span>
-<span class="cstat-no" title="statement not covered" >  "inlineSchemaHash": "b1c00a0208892f83aadf14d41eea48818caf9bd5e738895d824c68d50e87897c",</span>
+<span class="cstat-no" title="statement not covered" >  "inlineSchema": "generator client {\n  provider      = \"prisma-client\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"linux-musl-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id             String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email          String  @unique\n  name           String?\n  hashedPassword String\n  Task           Task[]\n}\n\nmodel Task {\n  id          String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  title       String\n  description String?\n  completed   Boolean   @default(false)\n  dueDate     DateTime?\n  createdAt   DateTime  @default(now())\n  author      User      @relation(fields: [authorId], references: [id])\n  authorId    String    @db.ObjectId\n}\n",</span>
+<span class="cstat-no" title="statement not covered" >  "inlineSchemaHash": "902a6b1b00b8a4f7f04b3efd30794d8564cb3a4ef0dd1f926201ac8fc95c7735",</span>
 <span class="cstat-no" title="statement not covered" >  "copyEngine": true,</span>
 <span class="cstat-no" title="statement not covered" >  "runtimeDataModel": {</span>
 <span class="cstat-no" title="statement not covered" >    "models": {},</span>
@@ -658,7 +673,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-05-01T20:46:50.147Z
+                at 2026-05-24T06:42:19.004Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

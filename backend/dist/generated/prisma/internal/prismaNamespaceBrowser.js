@@ -40,7 +40,6 @@ export const JsonNull = runtime.objectEnumValues.instances.JsonNull;
 export const AnyNull = runtime.objectEnumValues.instances.AnyNull;
 export const ModelName = {
     User: 'User',
-    Post: 'Post',
     Task: 'Task'
 };
 /*
@@ -51,13 +50,6 @@ export const UserScalarFieldEnum = {
     email: 'email',
     name: 'name',
     hashedPassword: 'hashedPassword'
-};
-export const PostScalarFieldEnum = {
-    id: 'id',
-    title: 'title',
-    content: 'content',
-    published: 'published',
-    authorId: 'authorId'
 };
 export const TaskScalarFieldEnum = {
     id: 'id',

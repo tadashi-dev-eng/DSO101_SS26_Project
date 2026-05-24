@@ -6,15 +6,10 @@ import { HTTPException } from "hono/http-exception";
 import { jwt, sign } from "hono/jwt";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import { getAuthenticatedUserId, validateLoginPayload, validateRegisterPayload } from "./auth.js";
+import { buildTaskUpdateData } from "./task-utils.js";
 dotenv.config();
 const app = new Hono();
-function getAuthenticatedUserId(c) {
-    const payload = c.get("jwtPayload");
-    if (!payload || typeof payload.sub !== "string") {
-        throw new HTTPException(401, { message: "Unauthorized" });
-    }
-    return payload.sub;
-}
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET ?? "mySecretKey";
 app.use("/*", cors());
@@ -23,12 +18,7 @@ app.get("/", (c) => {
 });
 app.post("/register", async (c) => {
     const body = await c.req.json();
-    const email = body.email?.toString().trim();
-    const password = body.password?.toString();
-    const name = body.name?.toString().trim();
-    if (!email || !password) {
-        throw new HTTPException(400, { message: "Email and password are required" });
-    }
+    const { email, password, name } = validateRegisterPayload(body);
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
@@ -55,11 +45,7 @@ app.post("/register", async (c) => {
 });
 app.post("/login", async (c) => {
     const body = await c.req.json();
-    const email = body.email?.toString().trim();
-    const password = body.password?.toString();
-    if (!email || !password) {
-        throw new HTTPException(400, { message: "Email and password are required" });
-    }
+    const { email, password } = validateLoginPayload(body);
     const user = await prisma.user.findUnique({
         where: { email },
         select: { id: true, email: true, name: true, hashedPassword: true },
@@ -139,35 +125,11 @@ app.put("/protected/tasks/:id", async (c) => {
     const userId = getAuthenticatedUserId(c);
     const id = c.req.param("id");
     const body = await c.req.json();
-    const title = body.title?.toString().trim();
-    const description = body.description !== undefined ? body.description.toString().trim() : undefined;
-    const completed = body.completed;
-    const dueDateValue = body.dueDate !== undefined ? new Date(body.dueDate) : undefined;
     const task = await prisma.task.findUnique({ where: { id } });
     if (!task || task.authorId !== userId) {
         throw new HTTPException(404, { message: "Task not found" });
     }
-    const updateData = {};
-    if (title)
-        updateData.title = title;
-    if (description !== undefined)
-        updateData.description = description;
-    if (typeof completed === "boolean")
-        updateData.completed = completed;
-    if (body.dueDate !== undefined) {
-        if (body.dueDate === null || body.dueDate === "") {
-            updateData.dueDate = null;
-        }
-        else {
-            if (!dueDateValue || Number.isNaN(dueDateValue.getTime())) {
-                throw new HTTPException(400, { message: "Invalid dueDate" });
-            }
-            updateData.dueDate = dueDateValue;
-        }
-    }
-    if (Object.keys(updateData).length === 0) {
-        throw new HTTPException(400, { message: "No valid fields to update" });
-    }
+    const updateData = buildTaskUpdateData(body);
     const updatedTask = await prisma.task.update({
         where: { id },
         data: updateData,
