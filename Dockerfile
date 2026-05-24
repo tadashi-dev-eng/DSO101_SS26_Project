@@ -3,16 +3,16 @@
 # Frontend build stage
 FROM node:20-alpine AS frontend-builder
 WORKDIR /app/frontend
-COPY frontend/package.json ./
-RUN npm install
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
 # Backend build stage
 FROM node:20-alpine AS backend-builder
 WORKDIR /app/backend
-COPY backend/package.json ./
-RUN npm install
+COPY backend/package.json backend/package-lock.json ./
+RUN npm ci
 COPY backend/ ./
 RUN npx prisma generate
 RUN npm run build
@@ -28,11 +28,13 @@ LABEL org.opencontainers.image.version=$APP_VERSION
 COPY --from=frontend-builder /app/frontend/.next ./frontend/.next
 COPY --from=frontend-builder /app/frontend/public ./frontend/public
 COPY --from=frontend-builder /app/frontend/package.json ./frontend/package.json
+COPY --from=frontend-builder /app/frontend/package-lock.json ./frontend/package-lock.json
 COPY --from=frontend-builder /app/frontend/next.config.js ./frontend/next.config.js
 
 # Copy built backend artifacts
 COPY --from=backend-builder /app/backend/dist ./backend/dist
 COPY --from=backend-builder /app/backend/package.json ./backend/package.json
+COPY --from=backend-builder /app/backend/package-lock.json ./backend/package-lock.json
 COPY --from=backend-builder /app/backend/generated ./backend/generated
 COPY --from=backend-builder /app/backend/prisma.config.ts ./backend/prisma.config.ts
 
