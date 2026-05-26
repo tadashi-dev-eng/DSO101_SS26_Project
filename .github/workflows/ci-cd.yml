@@ -89,6 +89,33 @@ jobs:
         working-directory: backend
         run: npm run coverage
 
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Run Snyk scan (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          if [ -z "$SNYK_TOKEN" ]; then
+            echo "Snyk token is not configured, skipping frontend security scan."
+          else
+            snyk auth "$SNYK_TOKEN"
+            cd frontend
+            snyk test --severity-threshold=high
+          fi
+
+      - name: Run Snyk scan (backend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          if [ -z "$SNYK_TOKEN" ]; then
+            echo "Snyk token is not configured, skipping backend security scan."
+          else
+            snyk auth "$SNYK_TOKEN"
+            cd backend
+            snyk test --severity-threshold=high
+          fi
+
   sonarcloud:
     name: SonarCloud analysis
     runs-on: ubuntu-latest
@@ -130,7 +157,13 @@ jobs:
             exit 0
           fi
           npm install -g sonar-scanner
-          sonar-scanner -Dsonar.login="$SONAR_TOKEN"
+          sonar-scanner \
+            -Dsonar.login="$SONAR_TOKEN" \
+            -Dsonar.projectKey=tadashi-dev-eng_DSO101_SS26_Project \
+            -Dsonar.organization=tadashi-dev-eng \
+            -Dsonar.sources=frontend,backend \
+            -Dsonar.tests=frontend,backend \
+            -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info,backend/coverage/lcov.info
 
   docker-publish:
     name: Build and publish Docker image

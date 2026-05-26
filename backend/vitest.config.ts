@@ -8,6 +8,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "lcov"],
       reportsDirectory: "./coverage",
+      exclude: ["**/generated/**", "**/dist/**", "**/prisma/**", "src/index.ts", "prisma.config.ts"],
     },
   },
 });
