@@ -74,4 +74,102 @@ describe("TasksPage", () => {
     expect(container.textContent).toContain("Review dataset")
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
+
+  it("toggles task completion when the button is clicked", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          tasks: [
+            {
+              id: "1",
+              title: "Review dataset",
+              description: "Check quality",
+              completed: false,
+              dueDate: "2026-06-01",
+              createdAt: "2026-05-01T00:00:00.000Z",
+            },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ message: "Updated" }),
+      })
+
+    ;(globalThis as GlobalFetch).fetch = fetchMock as unknown as typeof fetch
+
+    await act(async () => {
+      root = createRoot(container)
+      root.render(<TasksPage />)
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+
+    const completeButton = Array.from(container.querySelectorAll("button")).find((button) =>
+      button.textContent?.includes("Mark complete")
+    )!
+    expect(completeButton.textContent).toContain("Mark complete")
+
+    await act(async () => {
+      completeButton.dispatchEvent(new MouseEvent("click", { bubbles: true }))
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(fetchMock.mock.calls[1][0]).toContain("/protected/tasks/1")
+    expect(container.textContent).toContain("Mark open")
+  })
+
+  it("deletes a task when the Delete button is clicked", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          tasks: [
+            {
+              id: "1",
+              title: "Review dataset",
+              description: "Check quality",
+              completed: false,
+              dueDate: "2026-06-01",
+              createdAt: "2026-05-01T00:00:00.000Z",
+            },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ message: "Deleted" }),
+      })
+
+    ;(globalThis as GlobalFetch).fetch = fetchMock as unknown as typeof fetch
+
+    await act(async () => {
+      root = createRoot(container)
+      root.render(<TasksPage />)
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+
+    const deleteButton = Array.from(container.querySelectorAll("button")).find((button) =>
+      button.textContent?.includes("Delete")
+    )!
+
+    await act(async () => {
+      deleteButton.dispatchEvent(new MouseEvent("click", { bubbles: true }))
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(container.textContent).not.toContain("Review dataset")
+  })
 })
