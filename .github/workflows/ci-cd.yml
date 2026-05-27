@@ -167,7 +167,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/taskflow-app:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/taskflow-app:${{ github.sha }}
-            platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
 
       - name: Notify Render to redeploy
         run: |
