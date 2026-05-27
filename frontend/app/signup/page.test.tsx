@@ -1,10 +1,12 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, ComponentProps, describe, expect, it, vi } from "vitest"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { renderToStaticMarkup } from "react-dom/server"
 
+type GlobalFetch = typeof globalThis & { fetch?: typeof fetch }
+
 vi.mock("next/link", () => ({
-  default: (props: any) => <a {...props} />,
+  default: (props: ComponentProps<"a">) => <a {...props} />,
   __esModule: true,
 }))
 
@@ -45,7 +47,7 @@ describe("SignupPage", () => {
       headers: { get: () => "application/json" },
       json: async () => ({ message: "Signup successful. You can now log in." }),
     }))
-    ;(global as any).fetch = fetchMock
+    ;(globalThis as GlobalFetch).fetch = fetchMock as unknown as typeof fetch
 
     await act(async () => {
       root = createRoot(container)

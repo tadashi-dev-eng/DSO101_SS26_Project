@@ -13,10 +13,24 @@ if (typeof idleCallbackGlobals.cancelIdleCallback === "undefined") {
   idleCallbackGlobals.cancelIdleCallback = (id: number) => clearTimeout(id)
 }
 
-if (typeof (globalThis as any).ResizeObserver === "undefined") {
-  ;(globalThis as any).ResizeObserver = class {
+type ResizeObserverConstructor = new () => {
+  observe(): void
+  unobserve(): void
+  disconnect(): void
+}
+
+type GlobalWithResize = typeof globalThis & {
+  ResizeObserver?: ResizeObserverConstructor
+}
+
+const globalWithResize = globalThis as GlobalWithResize
+
+if (typeof globalWithResize.ResizeObserver === "undefined") {
+  const ResizeObserverPolyfill: ResizeObserverConstructor = class {
     observe() {}
     unobserve() {}
     disconnect() {}
   }
+
+  globalWithResize.ResizeObserver = ResizeObserverPolyfill
 }

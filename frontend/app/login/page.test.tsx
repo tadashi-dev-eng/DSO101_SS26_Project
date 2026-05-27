@@ -1,10 +1,12 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, ComponentProps, describe, expect, it, vi } from "vitest"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { renderToStaticMarkup } from "react-dom/server"
 
 const pushMock = vi.fn()
 const replaceMock = vi.fn()
+
+type GlobalFetch = typeof globalThis & { fetch?: typeof fetch }
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -14,7 +16,7 @@ vi.mock("next/navigation", () => ({
 }))
 
 vi.mock("next/link", () => ({
-  default: (props: any) => <a {...props} />,
+  default: (props: ComponentProps<"a">) => <a {...props} />,
   __esModule: true,
 }))
 
@@ -58,7 +60,7 @@ describe("LoginPage", () => {
       headers: { get: () => "application/json" },
       json: async () => ({ token: "fake-token", message: "Signed in successfully." }),
     }))
-    ;(global as any).fetch = fetchMock
+    ;(globalThis as GlobalFetch).fetch = fetchMock as unknown as typeof fetch
 
     await act(async () => {
       root = createRoot(container)
