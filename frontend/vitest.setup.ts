@@ -12,3 +12,11 @@ if (typeof idleCallbackGlobals.requestIdleCallback === "undefined") {
 if (typeof idleCallbackGlobals.cancelIdleCallback === "undefined") {
   idleCallbackGlobals.cancelIdleCallback = (id: number) => clearTimeout(id)
 }
+
+if (typeof (globalThis as any).ResizeObserver === "undefined") {
+  ;(globalThis as any).ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+}

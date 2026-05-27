@@ -19,10 +19,6 @@ export default defineConfig({
       all: true,
       include: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
       exclude: [
-        "**/app/login/**",
-        "**/app/signup/**",
-        "**/app/tasks/**",
-        "**/app/layout.tsx",
         "**/components/examples/**",
         "**/components/ui/checkbox.tsx",
         "**/components/ui/dialog.tsx",
