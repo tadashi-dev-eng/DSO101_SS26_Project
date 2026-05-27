@@ -45,9 +45,14 @@ app.post("/register", async (c) => {
     });
 
     return c.json({ message: "User registered successfully", user });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Register error:", error);
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code?: string }).code === "P2002"
+    ) {
       return c.json({ message: "Email already exists" }, 409);
     }
     throw new HTTPException(500, { message: "Registration failed" });
