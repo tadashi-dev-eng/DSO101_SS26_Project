@@ -4,10 +4,10 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "generate": "prisma generate",
-    "build": "npm run generate && tsc",
+    "build": "npm run generate && node --trace-warnings ./node_modules/.bin/tsc --pretty false",
     "start": "node dist/index.js",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage",
+    "test": "NODE_ENV=test npx vitest run --reporter=verbose",
+    "coverage": "npx vitest run --coverage --reporter=verbose",
     "security": "npx snyk test --severity-threshold=high"
   },
   "dependencies": {
